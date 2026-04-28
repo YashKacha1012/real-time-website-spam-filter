@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Spam Filter Form</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Real-Time Website Spam Filter</h1>
+      <p class="subtitle">Enter form data manually and submit</p>
+
+      <form id="spamForm">
+        <div class="row">
+          <div class="input-box">
+            <label>First Name</label>
+            <input type="text" id="first_name" required />
+          </div>
+
+          <div class="input-box">
+            <label>Last Name</label>
+            <input type="text" id="last_name" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-box">
+            <label>Email</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="input-box">
+            <label>Mobile</label>
+            <input type="text" id="mobile" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-box">
+            <label>Date of Birth</label>
+            <input type="date" id="dob" required />
+          </div>
+
+          <div class="input-box">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-box">
+            <label>Subject</label>
+            <input type="text" id="subject" placeholder="e.g. Maths" />
+          </div>
+
+          <div class="input-box">
+            <label>Hobbies</label>
+            <input type="text" id="hobbies" placeholder="e.g. Sports, Reading" />
+          </div>
+        </div>
+
+        <div class="input-box">
+          <label>Address</label>
+          <textarea id="address" rows="4" required></textarea>
+        </div>
+
+        <div class="row">
+          <div class="input-box">
+            <label>State</label>
+            <input type="text" id="state" required />
+          </div>
+
+          <div class="input-box">
+            <label>City</label>
+            <input type="text" id="city" required />
+          </div>
+        </div>
+
+        <!-- Honeypot Field -->
+        <input type="text" id="website" style="display: none;" autocomplete="off" />
+
+        <button type="submit" id="submitBtn">Submit Form</button>
+      </form>
+
+      <div id="successBox" class="success-box hidden">
+        <h3>Form submitted successfully</h3>
+        <p>Selenium can now read this submission.</p>
+      </div>
+
+      <div id="latestSubmission" class="result-box hidden">
+        <h3>Latest Submitted Data</h3>
+        <pre id="resultText"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("spamForm");
+    const successBox = document.getElementById("successBox");
+    const latestSubmission = document.getElementById("latestSubmission");
+    const resultText = document.getElementById("resultText");
+
+    const startTime = Date.now();
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const endTime = Date.now();
+      const timeOnPage = (endTime - startTime) / 1000;
+
+      const formData = {
+        first_name: document.getElementById("first_name").value.trim(),
+        last_name: document.getElementById("last_name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+        dob: document.getElementById("dob").value,
+        gender: document.getElementById("gender").value,
+        subject: document.getElementById("subject").value.trim(),
+        hobbies: document.getElementById("hobbies").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        state: document.getElementById("state").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        submitted: true,
+        submitted_at: new Date().toLocaleString(),
+        time_on_page: timeOnPage,
+        honeypot_filled: document.getElementById("website").value.trim() !== ""
+      };
+
+      localStorage.setItem("latest_submission", JSON.stringify(formData));
+
+      successBox.classList.remove("hidden");
+      latestSubmission.classList.remove("hidden");
+      resultText.textContent = JSON.stringify(formData, null, 2);
+    });
+
+    window.addEventListener("load", function() {
+      const saved = localStorage.getItem("latest_submission");
+      if (saved) {
+        latestSubmission.classList.remove("hidden");
+        resultText.textContent = JSON.stringify(JSON.parse(saved), null, 2);
+      }
+    });
+  </script>
+</body>
+</html>

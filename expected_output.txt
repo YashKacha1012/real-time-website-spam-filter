@@ -1,0 +1,21 @@
+EXPECTED OUTPUT
+
+1) When you run seed_dataset.py
+Sample data inserted successfully.
+
+2) When you run selenium_submitter.py
+Form submitted and stored in database.
+Verdict: spam
+Score: 14.5
+Rules: Keyword match (+3.0), URL in address (+2.5), ALL CAPS name (+1.5), Fast submission (+3.0), Fake email domain (+2.5), Invalid mobile (+2.0)
+
+3) In Streamlit dashboard
+- Total Submissions: 4 or more
+- Total Spam: 2
+- Total Suspect: 1
+- Total Ham: 1
+- Table with all inserted rows
+- Bar chart for spam / suspect / ham
+- Bar chart for average score by verdict
+- Bar chart for top rules
+- Bar chart for state-wise count

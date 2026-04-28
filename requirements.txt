@@ -1,0 +1,5 @@
+selenium
+streamlit
+pandas
+matplotlib
+mysql-connector-python
